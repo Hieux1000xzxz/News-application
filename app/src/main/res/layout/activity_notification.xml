@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF">
+
+    <!-- Thanh tiêu đề -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_back"
+            android:layout_marginStart="12dp"
+            android:contentDescription="back"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Thông báo (62)"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_more"
+            android:layout_marginEnd="12dp"
+            android:contentDescription="more"/>
+    </LinearLayout>
+
+    <!-- Thông báo bật thông báo -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1A4D3C"
+        android:padding="16dp"
+        android:layout_margin="12dp"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="0dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_bell"
+            android:contentDescription="bell"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BẠN CHƯA BẬT THÔNG BÁO?"
+                android:textColor="#CCCCCC"
+                android:textStyle="bold"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bật thông báo để cập nhật những tin tức mới nhất từ Dân trí"
+                android:textColor="#FFF"
+                android:textSize="15sp"
+                android:layout_marginTop="2dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bật thông báo"
+            android:textColor="#00C853"
+            android:textStyle="bold"
+            android:layout_marginEnd="12dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bỏ qua"
+            android:textColor="#CCCCCC"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <!-- Danh sách thông báo -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_notification"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+</LinearLayout>
