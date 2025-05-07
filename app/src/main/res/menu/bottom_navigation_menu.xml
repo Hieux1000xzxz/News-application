@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/ic_home"
+        android:title="Trang chủ" />
+    <item
+        android:id="@+id/menu_category"
+        android:icon="@drawable/ic_category"
+        android:title="Chuyên mục" />
+    <item
+        android:id="@+id/menu_video"
+        android:icon="@drawable/ic_video"
+        android:title="Video" />
+    <item
+        android:id="@+id/menu_ai"
+        android:icon="@drawable/ic_ai"
+        android:title="Dantri AI" />
+    <item
+        android:id="@+id/menu_utilities"
+        android:icon="@drawable/ic_utilities"
+        android:title="Tiện ích" />
+</menu>

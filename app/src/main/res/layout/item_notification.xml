@@ -41,7 +41,7 @@
                 android:layout_height="16dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_article"
-                android:tint="#FFFFFF" />
+                app:tint="#FFFFFF" />
         </FrameLayout>
     </FrameLayout>
 
