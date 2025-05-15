@@ -26,9 +26,6 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        // Khởi tạo dữ liệu
-        initializeData();
-
         MultiSlidingUpPanelLayout panelLayout = findViewById(R.id.root_sliding_up_panel);
 
         List<Class<?>> items = new ArrayList<>();
@@ -38,25 +35,8 @@ public class MainActivity extends AppCompatActivity {
         panelLayout.setPanelStateListener(new PanelStateListener(panelLayout) {});
 
         panelLayout.setAdapter(new MultiSlidingPanelAdapter(this, items));
-    }
 
-    private void initializeData() {
-        try {
-            dataInitializer = new DataInitializer(this);
-            dataInitializer.initializeData();
-            Log.i(TAG, "Đã bắt đầu khởi tạo dữ liệu");
-        } catch (Exception e) {
-            Log.e(TAG, "Lỗi khi khởi tạo dữ liệu: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
+   }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (dataInitializer != null) {
-            dataInitializer.close();
-            Log.i(TAG, "Đã đóng DataInitializer");
-        }
-    }
+
 }
