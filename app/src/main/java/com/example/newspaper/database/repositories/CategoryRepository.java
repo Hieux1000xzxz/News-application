@@ -15,10 +15,12 @@ public class CategoryRepository {
     private CategoryDao categoryDao;
     private LiveData<List<Category>> allCategories;
 
+    private LiveData<List<Category>> allCategoriesById;
     public CategoryRepository(Context context) {
         DatabaseHandler dbh = DatabaseHandler.getInstance(context);
         this.categoryDao = dbh.getCategoryDao();
         this.allCategories = categoryDao.getAllCategories();
+        this.allCategoriesById = categoryDao.getAllCategoriesById();
     }
 
     public void insert(Category category) {
@@ -59,5 +61,7 @@ public class CategoryRepository {
     public Category getCategoryByNameSync(String name) {
         return categoryDao.getCategoryByNameSync(name);
     }
-
+    public LiveData<List<Category>> getAllCategoriesById(){
+        return this.allCategoriesById;
+    }
 }

@@ -1,28 +1,36 @@
 package com.example.newspaper;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newspaper.models.Category;
 import com.example.newspaper.ui.adapters.AdminCategoryAdapter;
 import com.example.newspaper.ui.adapters.view_models.CategoryViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class AdminCategoryActivity extends AppCompatActivity {
     private CategoryViewModel categoryViewModel;
     private AdminCategoryAdapter adapter;
+    private TextInputEditText searchEditText;
+    private RecyclerView recyclerView;
+    private LinearLayout emptyStateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +41,21 @@ public class AdminCategoryActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
 
         // Initialize ViewModel
         categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
 
+        // Find views
+        recyclerView = findViewById(R.id.categoriesRecyclerView);
+        emptyStateView = findViewById(R.id.emptyStateView);
+        MaterialButton btnAddCategory = findViewById(R.id.btnAddCategory);
+        searchEditText = findViewById(R.id.searchEditText);
+
         // Setup RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.categoriesRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
         adapter = new AdminCategoryAdapter(
                 category -> showEditDialog(category),
                 category -> showDeleteConfirmationDialog(category)
@@ -47,13 +63,41 @@ public class AdminCategoryActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // Observe categories
-        categoryViewModel.getAllCategories().observe(this, categories -> {
+        categoryViewModel.getAllCategoriesById().observe(this, categories -> {
             adapter.setCategories(categories);
+            updateEmptyState(categories);
         });
 
-        // Setup FAB
-        FloatingActionButton fab = findViewById(R.id.fabAddCategory);
-        fab.setOnClickListener(v -> showAddDialog());
+        // Setup Add button click
+        btnAddCategory.setOnClickListener(v -> showAddDialog());
+
+        // Setup search functionality
+        setupSearchFunctionality();
+    }
+
+    private void setupSearchFunctionality() {
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                adapter.getFilter().filter(s.toString());
+            }
+        });
+    }
+
+    private void updateEmptyState(List<Category> categories) {
+        if (categories == null || categories.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyStateView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyStateView.setVisibility(View.GONE);
+        }
     }
 
     private void showAddDialog() {
@@ -61,24 +105,31 @@ public class AdminCategoryActivity extends AppCompatActivity {
         TextInputEditText editTextName = dialogView.findViewById(R.id.editTextCategoryName);
         TextInputEditText editTextDescription = dialogView.findViewById(R.id.editTextCategoryDescription);
 
-        new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Thêm chuyên mục mới")
                 .setView(dialogView)
-                .setPositiveButton("Thêm", (dialog, which) -> {
-                    String name = editTextName.getText().toString().trim();
-                    String description = editTextDescription.getText().toString().trim();
-
-                    if (name.isEmpty()) {
-                        Toast.makeText(this, "Vui lòng nhập tên chuyên mục", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    Category category = new Category(null, name, description, LocalDate.now());
-                    categoryViewModel.insert(category);
-                    Toast.makeText(this, "Đã thêm chuyên mục mới", Toast.LENGTH_SHORT).show();
-                })
+                .setPositiveButton("Thêm", null) // Null listener here, we'll override it later
                 .setNegativeButton("Hủy", null)
-                .show();
+                .create();
+
+        dialog.setOnShowListener(dialogInterface -> {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
+                String name = editTextName.getText().toString().trim();
+                String description = editTextDescription.getText().toString().trim();
+
+                if (name.isEmpty()) {
+                    editTextName.setError("Bạn chưa nhập tên chuyên mục.Không thể thêm chuyên mục.");
+                    return;
+                }
+
+                Category category = new Category(null, name, description, LocalDate.now());
+                categoryViewModel.insert(category);
+                Toast.makeText(this, "Đã thêm chuyên mục mới", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            });
+        });
+
+        dialog.show();
     }
 
     private void showEditDialog(Category category) {
@@ -89,25 +140,32 @@ public class AdminCategoryActivity extends AppCompatActivity {
         editTextName.setText(category.getName());
         editTextDescription.setText(category.getDescription());
 
-        new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Sửa chuyên mục")
                 .setView(dialogView)
-                .setPositiveButton("Lưu", (dialog, which) -> {
-                    String name = editTextName.getText().toString().trim();
-                    String description = editTextDescription.getText().toString().trim();
-
-                    if (name.isEmpty()) {
-                        Toast.makeText(this, "Vui lòng nhập tên chuyên mục", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    category.setName(name);
-                    category.setDescription(description);
-                    categoryViewModel.update(category);
-                    Toast.makeText(this, "Đã cập nhật chuyên mục", Toast.LENGTH_SHORT).show();
-                })
+                .setPositiveButton("Lưu", null) // Null listener here, we'll override it later
                 .setNegativeButton("Hủy", null)
-                .show();
+                .create();
+
+        dialog.setOnShowListener(dialogInterface -> {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
+                String name = editTextName.getText().toString().trim();
+                String description = editTextDescription.getText().toString().trim();
+
+                if (name.isEmpty()) {
+                    editTextName.setError("Vui lòng nhập tên chuyên mục");
+                    return;
+                }
+
+                category.setName(name);
+                category.setDescription(description);
+                categoryViewModel.update(category);
+                Toast.makeText(this, "Đã cập nhật chuyên mục", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            });
+        });
+
+        dialog.show();
     }
 
     private void showDeleteConfirmationDialog(Category category) {

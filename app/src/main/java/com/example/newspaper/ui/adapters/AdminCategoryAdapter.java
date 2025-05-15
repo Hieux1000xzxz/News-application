@@ -3,6 +3,8 @@ package com.example.newspaper.ui.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -11,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newspaper.R;
 import com.example.newspaper.models.Category;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminCategoryAdapter extends RecyclerView.Adapter<AdminCategoryAdapter.CategoryViewHolder> {
+public class AdminCategoryAdapter extends RecyclerView.Adapter<AdminCategoryAdapter.CategoryViewHolder> implements Filterable {
     private List<Category> categories = new ArrayList<>();
+    private List<Category> categoriesFull = new ArrayList<>();
     private final OnCategoryEditListener editListener;
     private final OnCategoryDeleteListener deleteListener;
 
@@ -54,26 +58,64 @@ public class AdminCategoryAdapter extends RecyclerView.Adapter<AdminCategoryAdap
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+        this.categoriesFull = new ArrayList<>(categories);
         notifyDataSetChanged();
     }
 
+    @Override
+    public Filter getFilter() {
+        return categoryFilter;
+    }
+
+    private Filter categoryFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Category> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(categoriesFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (Category category : categoriesFull) {
+                    if (category.getName().toLowerCase().contains(filterPattern) ||
+                            (category.getId() != null && category.getId().toString().contains(filterPattern)) ||
+                            (category.getDescription() != null && category.getDescription().toLowerCase().contains(filterPattern))) {
+                        filteredList.add(category);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            categories.clear();
+            categories.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
     class CategoryViewHolder extends RecyclerView.ViewHolder {
+        private final TextView categoryId;
         private final TextView categoryName;
-        private final TextView categoryDescription;
-        private final ImageButton btnEdit;
-        private final ImageButton btnDelete;
+        private final MaterialButton btnEdit;
+        private final MaterialButton btnDelete;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
+            categoryId = itemView.findViewById(R.id.categoryId);
             categoryName = itemView.findViewById(R.id.categoryName);
-            categoryDescription = itemView.findViewById(R.id.categoryDescription);
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }
 
         public void bind(Category category) {
+            categoryId.setText(category.getId() != null ? category.getId().toString() : "");
             categoryName.setText(category.getName());
-            categoryDescription.setText(category.getDescription());
 
             btnEdit.setOnClickListener(v -> {
                 if (editListener != null) {
@@ -88,4 +130,4 @@ public class AdminCategoryAdapter extends RecyclerView.Adapter<AdminCategoryAdap
             });
         }
     }
-} 
+}

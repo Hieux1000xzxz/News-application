@@ -38,6 +38,8 @@ public interface CategoryDao {
     @Query("SELECT * FROM category_table WHERE name = :name LIMIT 1")
     Category getCategoryByNameSync(String name);
 
+    @Query("SELECT * FROM category_table ORDER BY id ASC")
+    LiveData<List<Category>> getAllCategoriesById();
 
 
 }
