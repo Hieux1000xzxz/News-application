@@ -118,7 +118,9 @@ public class AdminCategoryActivity extends AppCompatActivity {
                 String description = editTextDescription.getText().toString().trim();
 
                 if (name.isEmpty()) {
-                    editTextName.setError("Bạn chưa nhập tên chuyên mục.Không thể thêm chuyên mục.");
+                    // Hiển thị thông báo bằng Toast thay vì setError
+                    Toast.makeText(this, "Bạn chưa nhập tên chuyên mục. Không thể thêm chuyên mục.", Toast.LENGTH_SHORT).show();
+                    // Không đóng dialog để người dùng có thể tiếp tục nhập
                     return;
                 }
 
@@ -153,7 +155,7 @@ public class AdminCategoryActivity extends AppCompatActivity {
                 String description = editTextDescription.getText().toString().trim();
 
                 if (name.isEmpty()) {
-                    editTextName.setError("Vui lòng nhập tên chuyên mục");
+                    Toast.makeText(this, "Bạn chưa nhập tên chuyên mục. Không thể cập nhật chuyên mục.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

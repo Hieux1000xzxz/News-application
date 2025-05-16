@@ -54,7 +54,7 @@
             android:name=".ui.settings.FeedbackSetting"
             android:exported="false" />
         <activity
-            android:name=".AdminCategoryActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
