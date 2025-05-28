@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Toàn cảnh</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Chào mừng Admin</string>
+    <string name="nav_header_subtitle">Nhóm 14 -Trường CNTT và TT- Đại học công nghiệp Hà Nội</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_report">Báo cáo thống kê</string>
+    <string name="menu_userManger">Quản lý người dùng</string>
+    <string name="menu_articleManager">Quản lý bài viết</string>
+    <string name="menu_categoryManager">Quản lý chuyên mục</string>
+    <string name="menu_logOut">Đăng xuất</string>
+
+    <string name="default_web_client_id">760374406062-hn36ig7cq29d7afejoiolukskmqqa13l.apps.googleusercontent.com"</string>
+
+</resources>

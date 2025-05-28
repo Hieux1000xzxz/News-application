@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_report">
+
+    <fragment
+        android:id="@+id/nav_report"
+        android:name="com.example.newspaper.admin.fragments.ReportFragment"
+        android:label="@string/menu_report"
+        tools:layout="@layout/fragment_report" />
+
+    <fragment
+        android:id="@+id/nav_managerUser"
+        android:name="com.example.newspaper.admin.fragments.UserManagerFragment"
+        android:label="@string/menu_userManger"
+        tools:layout="@layout/fragment_manager_article" />
+
+    <fragment
+        android:id="@+id/nav_manageArticle"
+        android:name="com.example.newspaper.admin.fragments.ArticleManagerFragment"
+        android:label="@string/menu_articleManager"
+        tools:layout="@layout/fragment_manager_user" />
+
+    <fragment
+        android:id="@+id/nav_manageCategory"
+        android:name="com.example.newspaper.admin.fragments.CategoryManagerFragment"
+        android:label="@string/menu_categoryManager"
+        tools:layout="@layout/fragment_manager_article" />
+</navigation>

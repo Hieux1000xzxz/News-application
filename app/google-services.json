@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "760374406062",
+    "project_id": "toan-canh-app",
+    "storage_bucket": "toan-canh-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760374406062:android:3424c9602a15cf1483f63f",
+        "android_client_info": {
+          "package_name": "com.example.newspaper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760374406062-hn36ig7cq29d7afejoiolukskmqqa13l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.newspaper",
+            "certificate_hash": "1df7c30453eaff997f90759127d75a1058f489da"
+          }
+        },
+        {
+          "client_id": "760374406062-i2o7nl684ctpg19uih300426ok6d6efs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtfYixDih_EHeKNu4-FpBpsSdAcZkT6y0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760374406062-i2o7nl684ctpg19uih300426ok6d6efs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
